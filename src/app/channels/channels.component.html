@@ -1,0 +1,5 @@
+<h2>List of channels in selected group</h2>
+
+<div *ngFor="let channel of channels">
+    <a href='{{groupname}}/{{channel}}/chat' (click)="channelname(channel)">{{channel}}</a>
+</div>

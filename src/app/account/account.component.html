@@ -6,31 +6,25 @@
             <div class="row g-0">
               <div class="col-md-4 gradient-custom text-center text-white"
                 style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-                <img src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
-                  alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
+                <img *ngIf="profilePictureURL" [src]="profilePictureURL" alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
                 <h5>{{username}}</h5>
-                <p>Role here</p>
                 <i class="far fa-edit mb-5"></i>
               </div>
               <div class="col-md-8">
                 <div class="card-body p-4">
-                  <h6>Information</h6>
-                  <hr class="mt-0 mb-4">
-                  <div class="row pt-1">
-                    <div class="col-6 mb-3">
-                      <h6>Email</h6>
-                      <p class="text-muted">info@example.com</p>
-                    </div>
-                  </div>
                   <h6>You are part of the following groups:</h6>
                   <hr class="mt-0 mb-4">
                   <div class="row pt-1">
                     <div class="col-6 mb-3">
-                    
                       <h6>
-                        <ul>
-                            <li *ngFor="let group of groups">{{ group }}</li>
-                        </ul>
+                        <tr *ngFor="let group of groups"> 
+                          <td></td>
+                          <td><a [routerLink]="[group, 'channels']">{{group}}</a></td>
+                          <!--<div *ngFor="let channel of channels">
+                            {{channel}}
+                          </div>
+                        -->
+                        </tr>
                       </h6>
                       <!-- <p class="text-muted">Channels</p> -->
                     </div>
@@ -43,3 +37,50 @@
       </div>
     </div>
   </section>
+  
+  <div>
+    <form enctype="multipart/form-data">
+      <br>Change Profile Pic: <input type="file" name="profilepic" (change)="onImageChange($event)">
+      <button (click)="changeprofilepic()">Change</button>
+    </form>
+  </div>
+
+  <div>
+    <form>
+      <br><button (click)="deleteself()">Delete Your Account</button><br>
+    </form>
+  </div>
+  <div *ngIf="isLoggedIn && isUserAuthorised()">
+    <h2>Admin Control</h2>
+
+    <form>
+      <label for="groupname">Group Name:</label><br>
+      <input type="text" [(ngModel)]="groupname" id="groupname" name="groupname"><br>
+      <button (click)="creategroup()">Create Group</button> <button (click)="removegroup()">Remove Group</button><br>
+      <label for="groupname">New Group Name:</label><br>
+      <input type="text" [(ngModel)]="newgroupname" id="newgroupname" name="newgroupname"><br>
+      <button (click)="modifygroup()">Modify Group</button><br>
+      <label for="channelname">Channel Name:</label><br>
+      <input type="text" [(ngModel)]="channelname" id="channelname" name="channelname"><br>
+      <button (click)="createchannel()">Create Channel</button> <button (click)="removechannel()">Remove Channel</button><br>
+    </form>
+
+    <br><br>
+    <form>
+      <label for="rusername">User You Want To Remove: </label><br>
+      <input type="text" [(ngModel)]="rusername" id="rusername" name="rusername"><br>
+      <label for="removefromgroup"> Group You Want To Remove User From: </label><br>
+      <input type="text" [(ngModel)]="rgroup" id="rgroup" name="rgroup"><br>
+      <button (click)="removeuser()">Remove User</button><br>
+    </form> 
+
+  </div>
+  <div *ngIf="isSuper()">
+    <form>
+      <label for="pusername">User Name: </label><br>
+      <input type="text" [(ngModel)]="pusername" id="pusername" name="pusername"><br>
+      <button (click)="promoteuser()">Promote User</button><br>
+    </form>
+    <br><br>
+  </div>
+
